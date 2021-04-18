@@ -51,10 +51,19 @@ main() {
 class _PerguntaAppState extends State<PerguntaApp> {
   // ao adiconar o _ na frente o componente se torna privado e só pode ser acessado no mesmo arquivo
   var _perguntaselecionada = 0;
+  var _notaTotal = 0;
 
-  void _responder() {
+  void _responder(int nota) {
     setState(() {
       _perguntaselecionada++;
+      _notaTotal += nota;
+    });
+  }
+
+  void _reiniciarQuestionario() {
+    setState(() {
+      _perguntaselecionada = 0;
+      _notaTotal = 0;
     });
   }
 
@@ -65,15 +74,30 @@ class _PerguntaAppState extends State<PerguntaApp> {
   final _perguntas = const [
     {
       'texto': 'Qual a sua cor favorita?',
-      'respostas': ['Preto', 'Verde', 'Vermelho', 'Branco'],
+      'respostas': [
+        {'texto': 'Preto', 'nota': 3},
+        {'texto': 'Verde', 'nota': 10},
+        {'texto': 'Vermelho', 'nota': 1},
+        {'texto': 'Branco', 'nota': 1},
+      ],
     },
     {
       'texto': 'Qual seu animal favorito?',
-      'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+      'respostas': [
+        {'texto': 'Coelho', 'nota': 1},
+        {'texto': 'Cobra', 'nota': -1},
+        {'texto': 'Elefante', 'nota': 4},
+        {'texto': 'Leão', 'nota': 7},
+      ],
     },
     {
       'texto': 'Qual seu esporte favorito?',
-      'respostas': ['Skate', 'Bicicleta', 'Futebol', 'Surfe'],
+      'respostas': [
+        {'texto': 'Skate', 'nota': 10},
+        {'texto': 'Bicicleta', 'nota': 5},
+        {'texto': 'Futebol', 'nota': 6},
+        {'texto': 'Surfe', 'nota': 3},
+      ],
     },
   ];
 
@@ -101,7 +125,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
                 perguntas: _perguntas,
                 perguntaSelecionada: _perguntaselecionada,
                 responder: _responder)
-            : Resultado(),
+            : Resultado(_notaTotal, _reiniciarQuestionario),
       ),
     );
   }
